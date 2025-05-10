@@ -1,8 +1,21 @@
 import { getASAInfo } from './tokenUtils'
 
+
 /**
- * Sets the background of the element ref to that of the user's pfp
- * @param {any} assetIDs An array of number - []assetID...
+ * Retrieves media information for a list of asset IDs
+ * @param {(number|string)[]} [assetIDs] - Array of asset IDs to process
+ * @returns {Promise<Array<{
+ *   name?: string,
+ *   mediaURL?: string,
+ *   is_collectible?: boolean,
+ *   mediaType?: string,
+ *   extension?: string,
+ *   logo?: string
+ * }|string|null>>} Array of media objects or empty array if no assetIDs provided
+ * - For collectibles: returns object with name, mediaURL, is_collectible, mediaType, and extension
+ * - For non-collectibles with Pera fetch: returns object with logo and is_collectible
+ * - For other assets: returns string URL or null
+ * @throws {Error} Errors during processing individual assets are caught and ignored
  */
 export const getAssetMedia = async (assetIDs) => {
 	const media = []
@@ -65,7 +78,7 @@ export const getAssetMedia = async (assetIDs) => {
 				}
 				media.push(pfp)
 			} catch (error) {
-				// Do nothing
+				// Oh well...
 			}
 		}
 		return media

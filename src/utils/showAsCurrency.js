@@ -14,7 +14,6 @@ import { nFormatter } from './nFormatter'
  * @param {boolean} trim - Whether to trim trailing zeros from the value.
  * @returns {string} - The formatted currency string.
  */
-
 export function showAsCurrency({
 	val = 0,
 	digits = 0,

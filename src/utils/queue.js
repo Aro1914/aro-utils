@@ -1,8 +1,8 @@
+
 /**
- * Delays execution for a specified number of milliseconds.
- * @param {number} ms - The number of milliseconds to delay.
- * @returns {Promise<void>} A promise that resolves after the delay.
- * @description Uses setTimeout internally to achieve the delay.
+ * Creates a Promise that resolves after a specified delay
+ * @param {number} ms - The delay time in milliseconds
+ * @returns {Promise<void>} A Promise that resolves after the specified delay
  */
 export function delay(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms))

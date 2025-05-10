@@ -1,0 +1,29 @@
+{
+  "name": "@aro1914/utils",
+  "version": "0.1.1",
+  "description": "Utility functions I use across projects",
+  "keywords": [
+    "utils",
+    "helpers"
+  ],
+  "homepage": "https://github.com/Aro1914/aro-utils#readme",
+  "bugs": {
+    "url": "https://github.com/Aro1914/aro-utils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aro1914/aro-utils.git"
+  },
+  "license": "MIT",
+  "author": "Emmanuel Agbavwe",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": ""
+  },
+  "dependencies": {
+    "algosdk": "^3.2.0",
+    "axios": "^1.9.0",
+    "multiformats": "^13.3.3"
+  }
+}

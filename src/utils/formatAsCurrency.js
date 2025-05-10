@@ -1,15 +1,21 @@
 import { reduceNumber, trimOverkill } from './trimOverkill'
 
 /**
- * Format a number as currency with support for abbreviated large numbers
- * and special formatting for very small decimals
- *
- * @param {Number} value - The number to format
- * @param {Number} depth - The threshold for abbreviation (default: 1e6)
- * @param {Number} dp - Number of decimal places (default: 2)
- * @param {Boolean} includeBlankDecimals - Include .00 for whole numbers (default: false)
- * @param {Boolean} trim - Trim decimal places for large numbers (default: false)
- * @returns {String} Formatted currency string
+ * Formats a numerical value as a currency string with optional suffixes and decimal places.
+ * 
+ * @param {Object} options - The configuration options
+ * @param {number} [options.value=0] - The numerical value to format
+ * @param {number} [options.depth=1e6] - The threshold value at which to start using suffixes (K,M,B,etc)
+ * @param {number} [options.dp=2] - The number of decimal places to show
+ * @param {boolean} [options.includeBlankDecimals=false] - Whether to show trailing zeros in decimal places
+ * @param {boolean} [options.trim=true] - Whether to trim decimal places for large numbers
+ * @returns {string} The formatted currency string
+ * 
+ * @example
+ * formatAsCurrency({ value: 1234567 }) // Returns "1.2M"
+ * formatAsCurrency({ value: 1234.56, depth: 1e9 }) // Returns "1,234.56"
+ * formatAsCurrency({ value: 1000, dp: 0 }) // Returns "1,000"
+ * formatAsCurrency({ value: 1234.5, includeBlankDecimals: true }) // Returns "1,234.50"
  */
 export function formatAsCurrency({
 	value = 0,
@@ -18,7 +24,6 @@ export function formatAsCurrency({
 	includeBlankDecimals = false,
 	trim = true,
 }) {
-	// Return value as is if cannot be cast to a valid number
 	if (isNaN(value)) {
 		return value
 	}
@@ -29,29 +34,22 @@ export function formatAsCurrency({
 	const dpMin = Number(
 		'0.' + '0'.repeat(absExponent - (absExponent >= 2 ? 2 : 0)) + '1'
 	)
-	// Handle small decimal values with many leading zeros
 	if (
 		value > 0 &&
 		absExponent >= (absExponent <= 4 ? 4 : dp) &&
 		value < dpMin
 	) {
-		// Use scientific notation to get the exact precision
 		const exponentValue = parseInt(exponent_, 10)
 
 		if (exponentValue < 0) {
-			// Due to floating point precision issues, we need to detect these cases
-			// Calculate leading zeros count after decimal point
-
 			const leadingZerosCount = Math.abs(exponentValue) - 1
 
-			// For very small numbers, precisely determine the significant digits
-			// Multiply by 10^(leadingZeros+dp) to position decimal point correctly for rounding
 			const scaleFactor = Math.pow(10, leadingZerosCount + dp)
 			const scaledValue = value * scaleFactor
 			const reduced = reduceNumber(scaledValue)?.reduced ?? scaledValue
 			const roundedMantissa = trimOverkill(reduced, 0)
 			const significantDigits = roundedMantissa.toString().substring(0, dp)
-			// Format the result with {n} indicating the count of zeros
+			
 			return `0.0{${leadingZerosCount}}${significantDigits}`
 		}
 	}
@@ -71,14 +69,11 @@ export function formatAsCurrency({
 	let exponent = 0
 	let suffix = ''
 
-	// Apply trim logic for large numbers near threshold
 	let effectiveDp = dp
-	// console.log(String(Math.floor(absValue)).length, size[depth])
+	
 	if (trim && dp != 0 && String(Math.floor(absValue)).length >= size[depth]) {
 		effectiveDp = 1 // Reduce to 1 decimal place
 	}
-
-	// Determine the exponent (depth) and corresponding suffix
 
 	if (absValue >= depth) {
 		const lookup = [
@@ -98,18 +93,18 @@ export function formatAsCurrency({
 		const depthExp = Math.floor(Math.log10(item.value))
 		exponent = depthExp
 	}
-	// Scale the value according to the exponent
+	
 	const scaledValue = exponent > 0 ? value / Math.pow(10, exponent) : value
-	// Format the number with appropriate decimal places
+	
 	let formatted
 	if (
 		effectiveDp === 0 ||
 		(!includeBlankDecimals && Number.isInteger(scaledValue))
 	) {
-		// No decimal places needed
+		
 		formatted = trimOverkill(scaledValue, 0).toLocaleString()
 	} else {
-		// Format with specified decimal places
+		
 		formatted = trimOverkill(
 			scaledValue,
 			trim ? dp : effectiveDp
@@ -119,6 +114,5 @@ export function formatAsCurrency({
 		})
 	}
 
-	// Append the suffix
-	return formatted + suffix
+	return formatted + suffix;
 }

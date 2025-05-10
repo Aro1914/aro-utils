@@ -1,5 +1,37 @@
 import { getASAInfo } from './tokenUtils'
 
+/**
+ * Fetches token information and associated media for given asset IDs
+ * @param {(number|string)[]} assetIDs - Array of Algorand asset IDs
+ * @returns {Promise<Array<{
+ *   token: {
+ *     success?: boolean,
+ *     decimals?: number,
+ *     name?: string,
+ *     unit?: string,
+ *     index?: number,
+ *     [key: string]: any
+ *   },
+ *   media: {
+ *     name?: string,
+ *     mediaURL?: string,
+ *     is_collectible?: boolean,
+ *     mediaType?: string,
+ *     extension?: string,
+ *     logo?: string
+ *   } | string | null
+ * }>>} Array of objects containing token info and media data
+ * 
+ * @description
+ * For each asset ID:
+ * - Fetches ASA (Algorand Standard Asset) information
+ * - Handles special case for ALGO (assetID = 0)
+ * - Processes both regular tokens and collectibles
+ * - Handles IPFS media URLs
+ * - Supports both Pera-fetched and standard ASA metadata
+ * 
+ * @throws Errors are caught and logged but don't stop processing of other assets
+ */
 export const getTokenAndMedia = async (assetIDs) => {
 	const media = []
 	if (assetIDs?.length) {
@@ -72,7 +104,7 @@ export const getTokenAndMedia = async (assetIDs) => {
 						media: pfp,
 					})
 				} catch (error) {
-					// Do nothing
+					// Oh well...
 					console.log('getTokenAndMedia', { error })
 				}
 			})

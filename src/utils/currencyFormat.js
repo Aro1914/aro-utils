@@ -1,11 +1,17 @@
 import { trimOverkill } from './trimOverkill'
 
 /**
- * Formats a given number to currency format
- * @param {number} _n number
- * @param {boolean} _ad add blank decimals
- * @param {number} _d decimal count
- * @returns string  value of the formatted number or a rounded number if no decimal count is given
+ * Formats a number into a currency string representation with customizable decimal places and comma separators.
+ * @param {number} _n - The number to format
+ * @param {boolean} [_ad=true] - Flag to determine if '.00' should be added when no decimals exist
+ * @param {number} [_d=2] - Number of decimal places to maintain
+ * @returns {string} The formatted currency string
+ * @example
+ * currencyFormat(1234567.89) // returns "1,234,567.89"
+ * currencyFormat(1234567) // returns "1,234,567.00"
+ * currencyFormat(1234567.89, false) // returns "1,234,567.89"
+ * currencyFormat(1234567, false) // returns "1,234,567"
+ * currencyFormat(1234567.89, true, 3) // returns "1,234,567.890"
  */
 export const currencyFormat = (_n, _ad = true, _d = 2) => {
 	let _sn = String(trimOverkill(_n, _d)),

@@ -1,7 +1,14 @@
+
 /**
- * Takes a given number of days and returns an easily readable time period
- * @param {number} days a given number of days
- * @returns {string} a time period
+ * Converts a number of days into a human-readable duration string.
+ * @param {number} days - The number of days to convert.
+ * @returns {string} A formatted string representing the duration in Days, Weeks, Months, or Years.
+ * @example
+ * getDuration(1) // returns "1 Day"
+ * getDuration(14) // returns "2 Weeks"
+ * getDuration(60) // returns "2 Months"
+ * getDuration(730) // returns "2 Years"
+ * getDuration(0.5) // returns "Less than a Day"
  */
 export const getDuration = (days) => {
 	if (days < 1) return `Less than a Day`

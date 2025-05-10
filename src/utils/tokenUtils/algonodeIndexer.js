@@ -24,8 +24,8 @@ export const algonodeIndexerFetch = async (assetID) => {
 				const link =
 					_url.indexOf('ipfs://') === 0
 						? 'https://gateway.ipfs.io/ipfs/' +
-						  _url.slice(7).replace(/{id}/g, res.index)
-						: _url.replace(/{id}/g, res.index)
+						  _url.slice(7).replace(/{id}/g, res.index.toString())
+						: _url.replace(/{id}/g, res.index.toString())
 				let arc3Res = await axios.get(link)
 				if (
 					arc3Res.headers.getContentType().indexOf('application/json') !== -1
@@ -41,7 +41,7 @@ export const algonodeIndexerFetch = async (assetID) => {
 					'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ' &&
 				_url.indexOf('template-') === 0
 			) {
-				let account = algosdk.decodeAddress(res.asset.params.reserve)
+				let account = algosdk.Address.fromString(res.asset.params.reserve)
 
 				let newArray = new Uint8Array(34)
 

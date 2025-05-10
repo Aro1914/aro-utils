@@ -1,3 +1,8 @@
+/**
+ * Splits an array of transactions into multiple arrays with a maximum length of 16 transactions each
+ * @param {Array} txns - The array of transactions to be split
+ * @returns {Array<Array>} An array containing subarrays of transactions, each subarray having maximum 16 elements
+ */
 export const splitTransactions = (txns) => {
 	const batch_ = txns
 	const batchLen_ = batch_.length

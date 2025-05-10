@@ -1,20 +1,20 @@
+/**
+ * Calculates the number of days remaining in a subscription
+ * @param {string|Date} renewalTimestamp - The renewal date timestamp
+ * @param {number} daysRenewed - The number of days in the renewal period
+ * @returns {number} The number of days remaining (0 if expired)
+ */
 export function getSubDaysLeft(renewalTimestamp, daysRenewed) {
-	// Create a Date object from the ISO string timestamp
-	const renewalDate = new Date(renewalTimestamp) // No need for conversion here
+	const renewalDate = new Date(renewalTimestamp)
 
-	// Calculate the end date by adding the renewal days to the renewal date
 	const endDate = new Date(renewalDate)
 	endDate.setDate(renewalDate.getDate() + daysRenewed)
 
-	// Get the current date
 	const currentDate = new Date()
 
-	// Calculate the time difference between the end date and the current date (in milliseconds)
 	const timeDifference = endDate - currentDate
 
-	// Convert the time difference from milliseconds to days
 	const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
 
-	// Return the days remaining, if negative, return 0 (subscription expired)
 	return daysRemaining > 0 ? daysRemaining : 0
 }

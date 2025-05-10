@@ -1,5 +1,17 @@
 import { trimOverkill } from './trimOverkill'
 
+/**
+ * Formats a number with metric suffixes (K, M, B, T, P, E) based on its magnitude.
+ * @param {number} num - The number to format
+ * @param {number} [digits=0] - Number of decimal places to show
+ * @param {number} [depth=1] - Minimum magnitude threshold for formatting (1 for all, 1000 for K+, 1000000 for M+, etc)
+ * @param {boolean} [trim=false] - Whether to trim trailing zeros after decimal point when number equals depth threshold
+ * @returns {string} The formatted number with appropriate metric suffix
+ * @example
+ * nFormatter(1234, 1) // returns "1.2K"
+ * nFormatter(1234, 0, 1000000) // returns 1234 (below M threshold)
+ * nFormatter(1234000, 2) // returns "1.23M"
+ */
 export function nFormatter(num, digits = 0, depth = 1, trim = false) {
 	num = trimOverkill(num, digits)
 	const lookup = [
