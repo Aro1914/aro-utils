@@ -1,6 +1,10 @@
-import { NETWORK } from '../../config'
-const NFD_REST_API_BASE_URL = `https://api${NETWORK === 'testnet' ? '.testnet' : ''
-	}.nf.domains/nfd/`
+import { getConfig } from '../config'
+
+const { NETWORK } = getConfig()
+
+const NFD_REST_API_BASE_URL = `https://api${
+	NETWORK === 'testnet' ? '.testnet' : ''
+}.nf.domains/nfd/`
 
 export const getNFD = async (address) => {
 	if (!address) return { success: false }
@@ -48,7 +52,9 @@ export const getNFDs = async (address) => {
 export const getSegmentsOfNFD = async (nfd) => {
 	if (!nfd) return { success: false }
 	return await fetch(
-		`${NFD_REST_API_BASE_URL}v2/search?name=${String(nfd).toLowerCase()}&view=thumbnail`
+		`${NFD_REST_API_BASE_URL}v2/search?name=${String(
+			nfd
+		).toLowerCase()}&view=thumbnail`
 	)
 		.then((res) => res.json())
 		.then((data) => ({ ...data, success: data?.nfds?.length }))
@@ -102,11 +108,11 @@ export const validateNFDFormat = (x, isBase = false) => {
 }
 
 export const validateNFD = async (x, isBase = false) => {
-	if(!x) return false
+	if (!x) return false
 	const formatValid = validateNFDFormat(x, isBase)
 	if (formatValid) {
 		const res = await getAddress(x)
-		return (res.success && res?.name && res?.state === 'owned' && res?.owner)
+		return res.success && res?.name && res?.state === 'owned' && res?.owner
 	}
 	return false
 }

@@ -47,3 +47,5 @@ export {
 	validateNFDFormat,
 	verifySegment,
 } from './utils'
+
+export { getConfig, setConfig } from './config'

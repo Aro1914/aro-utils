@@ -1,21 +1,19 @@
 import { reduceNumber, trimOverkill } from './trimOverkill'
 
 /**
- * Formats a numerical value as a currency string with optional suffixes and decimal places.
- * 
- * @param {Object} options - The configuration options
- * @param {number} [options.value=0] - The numerical value to format
- * @param {number} [options.depth=1e6] - The threshold value at which to start using suffixes (K,M,B,etc)
- * @param {number} [options.dp=2] - The number of decimal places to show
- * @param {boolean} [options.includeBlankDecimals=false] - Whether to show trailing zeros in decimal places
- * @param {boolean} [options.trim=true] - Whether to trim decimal places for large numbers
+ * Formats a number as a currency string with optional suffixes for large numbers.
+ * @param {Object} params - The parameters for formatting
+ * @param {number} [params.value=0] - The number to format
+ * @param {number} [params.depth=1e6] - The threshold at which to start using suffixes (K,M,B,etc)
+ * @param {number} [params.dp=2] - The number of decimal places to show
+ * @param {boolean} [params.includeBlankDecimals=false] - Whether to show trailing zeros in decimals
+ * @param {boolean} [params.trim=true] - Whether to reduce decimal places for large numbers
+ * @param {string} [params.symbol=''] - The currency symbol to prepend (single character only)
  * @returns {string} The formatted currency string
- * 
  * @example
- * formatAsCurrency({ value: 1234567 }) // Returns "1.2M"
- * formatAsCurrency({ value: 1234.56, depth: 1e9 }) // Returns "1,234.56"
- * formatAsCurrency({ value: 1000, dp: 0 }) // Returns "1,000"
- * formatAsCurrency({ value: 1234.5, includeBlankDecimals: true }) // Returns "1,234.50"
+ * formatAsCurrency({ value: 1234567, symbol: '$' }) // Returns "$1.2M"
+ * formatAsCurrency({ value: 1234.56, dp: 2, symbol: '€' }) // Returns "€1,234.56"
+ * formatAsCurrency({ value: 1000000, depth: 1e9 }) // Returns "1,000,000"
  */
 export function formatAsCurrency({
 	value = 0,
@@ -23,6 +21,7 @@ export function formatAsCurrency({
 	dp = 2,
 	includeBlankDecimals = false,
 	trim = true,
+	symbol = '', // '$' or '€'
 }) {
 	if (isNaN(value)) {
 		return value
@@ -49,7 +48,7 @@ export function formatAsCurrency({
 			const reduced = reduceNumber(scaledValue)?.reduced ?? scaledValue
 			const roundedMantissa = trimOverkill(reduced, 0)
 			const significantDigits = roundedMantissa.toString().substring(0, dp)
-			
+
 			return `0.0{${leadingZerosCount}}${significantDigits}`
 		}
 	}
@@ -70,7 +69,7 @@ export function formatAsCurrency({
 	let suffix = ''
 
 	let effectiveDp = dp
-	
+
 	if (trim && dp != 0 && String(Math.floor(absValue)).length >= size[depth]) {
 		effectiveDp = 1 // Reduce to 1 decimal place
 	}
@@ -93,18 +92,16 @@ export function formatAsCurrency({
 		const depthExp = Math.floor(Math.log10(item.value))
 		exponent = depthExp
 	}
-	
+
 	const scaledValue = exponent > 0 ? value / Math.pow(10, exponent) : value
-	
+
 	let formatted
 	if (
 		effectiveDp === 0 ||
 		(!includeBlankDecimals && Number.isInteger(scaledValue))
 	) {
-		
 		formatted = trimOverkill(scaledValue, 0).toLocaleString()
 	} else {
-		
 		formatted = trimOverkill(
 			scaledValue,
 			trim ? dp : effectiveDp
@@ -114,5 +111,11 @@ export function formatAsCurrency({
 		})
 	}
 
-	return formatted + suffix;
+	return (
+		(symbol && typeof symbol === 'string' && symbol.length === 1
+			? symbol
+			: '') +
+		formatted +
+		suffix
+	)
 }

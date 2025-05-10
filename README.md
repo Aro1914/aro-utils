@@ -8,6 +8,32 @@ A comprehensive collection of utility functions for JavaScript applications, foc
 npm install @aro1914/utils
 ```
 
+## Configuration
+
+Configure the library's global settings using the `setConfig` function. This allows you to set default behaviors for various utilities.
+
+```javascript
+import { setConfig, getConfig } from '@aro1914/utils';
+
+// Set global configurations
+setConfig({
+  NETWORK: 'mainnet', // or 'testnet'
+  SERVER_URI: 'https://your-server-uri.com'
+});
+
+// Get current configuration
+const currentConfig = getConfig();
+```
+
+You can update individual settings at any time:
+
+```javascript
+// Update specific settings
+setConfig({
+  NETWORK: 'testnet'  // Updates only the network setting
+});
+```
+
 ## Key Features
 
 - Array manipulation (filtering, shuffling, filling)
@@ -77,25 +103,26 @@ shuffle([1, 2, 3, 4, 5], 3); // Returns 3 randomly selected elements
 
 #### `formatAsCurrency(options)`
 
-Formats numbers as currency with sophisticated options.
+Formats numbers as currency with sophisticated options. This function respects global configuration settings but allows overrides per call.
 
 ```javascript
 // Basic usage
-formatAsCurrency({ value: 1234567 }) // "1.2M"
+formatAsCurrency({ value: 1234567 }) // "$1.2M"
 
-// With custom depth
+// With formatting options
 formatAsCurrency({ 
   value: 1234.56, 
+  symbol: '$',
   depth: 1e9,
   dp: 2,
   includeBlankDecimals: true 
-}) // "1,234.56"
+}) // "$1,234.56"
 
 // Without decimals
 formatAsCurrency({ 
   value: 1000, 
   dp: 0 
-}) // "1,000"
+}) // "$1,000"
 ```
 
 #### `currencyFormat(number, addDecimals = true, decimals = 2)`

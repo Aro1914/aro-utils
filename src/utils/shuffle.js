@@ -62,5 +62,5 @@ export const shuffle = (array, returnAmount) => {
 		return ret
 	}
 
-	return randomize(returnRandomSection(array, returnAmount))
+	return returnRandomSection(randomize(array), returnAmount)
 }

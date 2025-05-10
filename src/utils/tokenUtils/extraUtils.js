@@ -1,6 +1,8 @@
-import { NETWORK } from '../../config'
 import algosdk from 'algosdk'
 import { getASAInfo } from './tokenUtil'
+import { getConfig } from '../config'
+
+const { NETWORK } = getConfig()
 
 const indexerServer = `https://${NETWORK}-idx.algonode.cloud`
 

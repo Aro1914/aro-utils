@@ -1,5 +1,7 @@
 import axios from 'axios'
-import { SERVER_URI } from '../config'
+import { getConfig } from '../config'
+
+const { SERVER_URI } = getConfig()
 
 const serverURI = SERVER_URI
 
