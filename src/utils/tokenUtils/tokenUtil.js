@@ -30,11 +30,11 @@ export const getASAInfo = async (asset) => {
 		}
 	} else {
 		res = await algonodeIndexerFetch(asset)
-		if (res.success && (res.name || res['unit-name'])) {
-			return { ...res, index: asset, unit: res['unit-name'] }
+		if (res.success && (res.name || res['unitName'])) {
+			return { ...res, index: asset, unit: res['unitName'] }
 		} else {
 			res = await algonodeClientFetch(asset)
-			return { ...res, index: asset, unit: res['unit-name'] }
+			return { ...res, index: asset, unit: res['unitName'] }
 		}
 	}
 }

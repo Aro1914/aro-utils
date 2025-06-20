@@ -79,14 +79,14 @@ export const algonodeIndexerFetch = async (assetID) => {
 								...myJsonParsed,
 								...arc3Parsed,
 								...res.asset.params,
-								unit: res.asset.params?.['unit-name'] ?? res.asset.params?.unit,
+								unit: res.asset.params?.['unitName'] ?? res.asset.params?.unit,
 								success: true,
 								isARC69: false,
 						  }
 						: {
 								...myJsonParsed,
 								...res.asset.params,
-								unit: res.asset.params?.['unit-name'] ?? res.asset.params?.unit,
+								unit: res.asset.params?.['unitName'] ?? res.asset.params?.unit,
 								success: true,
 								isARC69: false,
 						  }
@@ -94,13 +94,13 @@ export const algonodeIndexerFetch = async (assetID) => {
 					? {
 							...res.asset.params,
 							...arc3Parsed,
-							unit: res.asset.params?.['unit-name'] ?? res.asset.params?.unit,
+							unit: res.asset.params?.['unitName'] ?? res.asset.params?.unit,
 							success: true,
 							isARC69: false,
 					  }
 					: {
 							...res.asset.params,
-							unit: res.asset.params?.['unit-name'] ?? res.asset.params?.unit,
+							unit: res.asset.params?.['unitName'] ?? res.asset.params?.unit,
 							success: true,
 							isARC69: true,
 					  }

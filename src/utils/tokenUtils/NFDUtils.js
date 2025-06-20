@@ -116,3 +116,51 @@ export const validateNFD = async (x, isBase = false) => {
 	}
 	return false
 }
+
+/**
+ * Resolves an Algorand Non-Fungible Domain (NFD) address or domain.
+ * @param {string} address - The Algorand address or NFD domain to resolve.
+ * @param {boolean} [isBase=false] - Flag indicating if the address is a base domain.
+ * @returns {Promise<{success: boolean, nfd: string|null}>} Object containing:
+ *   - success: Indicates if resolution was successful
+ *   - nfd: The resolved NFD domain name if successful, null or original address if not
+ * @async
+ */
+export const resolveNFD = async (address, isBase = false) => {
+	if (!address) return { success: false, nfd: null }
+	const formatValid = validateNFDFormat(address, isBase)
+	if (formatValid) {
+		const isValidNFD = await validateNFD(address, isBase)
+		return {
+			success: isValidNFD,
+			nfd: isValidNFD ? address : null,
+		}
+	} else {
+		const res = await getNFD(address)
+		const success = res.success && res?.[address].name
+		return { success, nfd: success ? res?.[address].name : address }
+	}
+}
+
+/**
+ * Resolves an Algorand NFD (Non-Fungible Domain) to its corresponding wallet address
+ * @param {string} nfd - The NFD to resolve (e.g., 'example.algo')
+ * @param {boolean} [isBase=false] - Flag indicating if the NFD is a base domain
+ * @returns {Promise<{success: boolean, address: string|null}>} Object containing:
+ *   - success: Indicates if resolution was successful
+ *   - address: The resolved Algorand wallet address if successful, null if unsuccessful
+ * @async
+ */
+export const resolveAddress = async (nfd, isBase = false) => {
+	if (!nfd) return { success: false, address: null }
+	const formatValid = validateNFDFormat(nfd, isBase)
+	if (formatValid) {
+		const res = await getAddress(nfd)
+		const success = res.success && res?.[nfd]?.address
+		return { success, address: success ? res[nfd].address : null }
+	}
+	return {
+		success: false,
+		address: null
+	}
+}

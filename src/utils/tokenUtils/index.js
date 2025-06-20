@@ -11,9 +11,12 @@ export {
 	getNFD,
 	getNFDs,
 	getSegmentsOfNFD,
+	resolveAddress,
+	resolveNFD,
 	validateNFD,
 	validateNFDFormat,
 	verifySegment,
 } from './NFDUtils'
+export { createNftNumberExtractor } from './NFTUtils'
 export { peraGetAssetDetail } from './peraGetAssetDetail'
 export { getASAInfo } from './tokenUtil'

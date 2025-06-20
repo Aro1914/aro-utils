@@ -21,7 +21,7 @@ import { getASAInfo } from './tokenUtils'
  *     logo?: string
  *   } | string | null
  * }>>} Array of objects containing token info and media data
- * 
+ *
  * @description
  * For each asset ID:
  * - Fetches ASA (Algorand Standard Asset) information
@@ -29,7 +29,7 @@ import { getASAInfo } from './tokenUtils'
  * - Processes both regular tokens and collectibles
  * - Handles IPFS media URLs
  * - Supports both Pera-fetched and standard ASA metadata
- * 
+ *
  * @throws Errors are caught and logged but don't stop processing of other assets
  */
 export const getTokenAndMedia = async (assetIDs) => {
@@ -60,7 +60,7 @@ export const getTokenAndMedia = async (assetIDs) => {
 							if (is_collectible) {
 								const media = asaInfo.collectible.media.find((e) => e.url)
 								const urlParts = media.url.split('/')
-							const cid = urlParts[urlParts.length - 1]
+								const cid = urlParts[urlParts.length - 1]
 								pfp = {
 									name: media?.name,
 									mediaURL: String(media?.url).includes(

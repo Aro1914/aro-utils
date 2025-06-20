@@ -6,6 +6,7 @@ export {
 	validateAndMergeWithOld,
 } from './arrayUtils'
 export { asyncFilter } from './asyncFilter'
+export { bigintToSafeNumber as btn } from './btn'
 export { cf } from './cf'
 export { currencyFormat } from './currencyFormat'
 export { customTrim } from './customTrim'
@@ -33,6 +34,7 @@ export { shuffle } from './shuffle'
 export { splitTransactions } from './splitTransactions'
 export { throttle } from './throttle'
 export {
+	createNftNumberExtractor,
 	getAddress,
 	getASAInfo,
 	getAssetConfigNote,
@@ -42,6 +44,8 @@ export {
 	getNFD,
 	getNFDs,
 	getSegmentsOfNFD,
+	resolveAddress,
+	resolveNFD,
 	validateNFD,
 	validateNFDFormat,
 	verifySegment,

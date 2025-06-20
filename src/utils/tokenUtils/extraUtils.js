@@ -1,6 +1,7 @@
 import algosdk from 'algosdk'
 import { getASAInfo } from './tokenUtil'
 import { getConfig } from '../config'
+import { btn } from '..';
 
 const { NETWORK } = getConfig()
 
@@ -31,7 +32,7 @@ export const getAssetsByCreator = async ({
 	if (!creator) return []
 	try {
 		const accountInfo = await algodClient.accountInformation(creator).do()
-		let created_assets = accountInfo['created-assets']
+		let created_assets = accountInfo['createdAssets']
 		const data = []
 		const noneRedeemable = {}
 		blacklist.forEach((e) => {
@@ -51,7 +52,7 @@ export const getAssetsByCreator = async ({
 							.indexOf(String(searchKey).toLowerCase()) !== -1
 					: true)
 			) {
-				data.push(asset_id)
+				data.push(btn(asset_id))
 			}
 		}
 		return data
@@ -77,7 +78,7 @@ export const getAssetsByAccount = async ({
 				.nextToken(nextToken)
 				.do()
 			account_assets = account_assets.concat(res['assets'])
-			nextToken = res['next-token']
+			nextToken = res['nextToken']
 		} while (nextToken)
 		if (!account_assets.length) {
 			return []
@@ -92,7 +93,7 @@ export const getAssetsByAccount = async ({
 		const len = account_assets.length
 		for (let i = 0; i < len; i++) {
 			const asset = account_assets[i]
-			const asset_id = asset['asset-id']
+			const asset_id = asset['assetId']
 			const is_deleted = asset['deleted']
 			const amount = asset['amount']
 			if (
@@ -119,7 +120,7 @@ export const getAssetConfigNote = async (asset_id) => {
 		return null
 	}
 
-	transactions.sort((a, b) => b['round-time'] - a['round-time'])
+	transactions.sort((a, b) => b['roundTime'] - a['roundTime'])
 
 	for (const transaction of transactions) {
 		try {
@@ -140,8 +141,5 @@ export const getAssetConfigNote = async (asset_id) => {
 		description: '',
 		media_url: asaBaseInfo?.url,
 		mime_type: 'image/png',
-		properties: {
-			redeemed: 'no',
-		},
 	}
 }
