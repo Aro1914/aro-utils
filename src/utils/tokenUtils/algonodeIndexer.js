@@ -2,7 +2,6 @@ import algosdk from 'algosdk'
 import axios from 'axios'
 import { base58btc } from 'multiformats/bases/base58'
 import { getConfig } from '../config'
-
 const { NETWORK } = getConfig()
 export const algonodeIndexerFetch = async (assetID) => {
 	assetID = Number(assetID)

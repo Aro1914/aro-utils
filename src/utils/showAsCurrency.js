@@ -1,6 +1,4 @@
-import { currencyFormat } from './currencyFormat'
-import { trimOverkill } from './trimOverkill'
-import { nFormatter } from './nFormatter'
+import { formatAsCurrency } from './formatAsCurrency'
 
 /**
  * Formats a numeric value as a currency string based on provided parameters.
@@ -21,16 +19,11 @@ export function showAsCurrency({
 	blankDecimals = false,
 	trim = false,
 }) {
-	const f =
-		val < 1
-			? trimOverkill(val ?? 0, digits)
-			: nFormatter(val, digits, depth, trim)
-
-	const c = isNaN(f)
-		? f
-		: f >= 1
-		? currencyFormat(f, blankDecimals, digits)
-		: trimOverkill(f, digits)
-
-	return c
+	return formatAsCurrency({
+		value: val,
+		dp: digits,
+		depth,
+		includeBlankDecimals: blankDecimals,
+		trim,
+	})
 }

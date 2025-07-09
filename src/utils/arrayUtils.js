@@ -1,13 +1,14 @@
 /**
- * Fills an array to a specified size by repeating its elements cyclically
- * @param {Array} array - The source array to be filled from
- * @param {number} size - The target size of the resulting array
- * @returns {Array} A new array of the specified size filled with cyclically repeated elements from the source array
- * @example
- * fillArray([1,2], 5) // returns [1,2,1,2,1]
- * fillArray([1], 3) // returns [1,1,1]
- * fillArray([], 3) // returns []
- * fillArray([1,2], 0) // returns []
+ * Fills an array by repeating its elements until the desired length is reached.
+ *
+ * Given an array, this function repeats its elements to fill up the array to
+ * the desired length. For example, if the array is [1, 2, 3] and the desired
+ * length is 6, the resulting array will be [1, 2, 3, 1, 2, 3].
+ *
+ * @param {Array} array - The original array to fill up.
+ * @param {number} size - The desired length of the filled array.
+ * @returns {Array} A new array with the original array elements repeated until
+ * the desired length is reached.
  */
 export const fillArray = (array, size) => {
 	if (!array?.length || !size) return []
@@ -22,17 +23,12 @@ export const fillArray = (array, size) => {
 	return newArray
 }
 
-
 /**
- * Takes an array and duplicates its elements, appending them to the end of the array a specified number of times.
- * @param {Array} array - The input array to be padded
- * @param {number} padTimes - The number of times to pad (duplicate) elements from the start of the array
- * @returns {Array} A new array with the padded elements. Returns empty array if input array is empty/null/undefined or if padTimes is falsy
- * @example
- * padArray([1,2,3], 2) // returns [1,2,3,1,2]
- * padArray([1], 3) // returns [1,1,1,1]
- * padArray([], 2) // returns []
- * padArray(null, 2) // returns []
+ * Pads an array by repeating its elements a specified number of times.
+ *
+ * @param {Array} array - The array to be padded.
+ * @param {number} padTimes - The number of times to repeat the elements of the array.
+ * @returns {Array} - The new array with repeated elements.
  */
 export const padArray = (array, padTimes) => {
 	if (!array?.length || !padTimes) return []
@@ -44,6 +40,13 @@ export const padArray = (array, padTimes) => {
 
 	return newArray
 }
+
+// const tempArray = [1, 2, 3, 4, 5]
+
+// const filledArray = fillArray(tempArray, 3)
+// console.log(filledArray) // [1, 2, 1]
+// const paddedArray = padArray(tempArray, 3)
+// console.log(paddedArray) // [1, 2, 1, 1, 2, 1]
 
 /**
  * Merges and validates two arrays of objects based on a specified property,
@@ -75,20 +78,18 @@ export const validateAndMerge = (prevData, newData, prop) => {
 	return Array.from(updatedSet.values())
 }
 
+// const prev = [{id: 1, name: 'old'}, {id: 2, name: 'keep'}];
+// const next = [{id: 2, name: 'keeps'}, {id: 3, name: 'new'}];
+// const merged = validateAndMerge(prev, next, 'id');
+// merged
+
 /**
- * Merges two arrays of objects, filtering out duplicates based on a specified property.
- * The function preserves newer items when duplicates are found.
+ * Merges new data with previous data, ensuring no duplicates based on a specified property.
  *
- * @param {Array} prevData - The original array of objects
- * @param {Array} newData - The new array of objects to merge with the original
- * @param {string} prop - The property name to use for identifying duplicates
- * @returns {Array} A new array containing merged data with duplicates removed
- * 
- * @example
- * const prev = [{id: 1, name: 'John'}, {id: 2, name: 'Jane'}];
- * const new = [{id: 2, name: 'Janet'}, {id: 3, name: 'Bob'}];
- * validateAndMergeWithOld(prev, new, 'id');
- * // Returns [{id: 1, name: 'John'}, {id: 2, name: 'Janet'}, {id: 3, name: 'Bob'}]
+ * @param {Array<Object>} prevData - The previous data array.
+ * @param {Array<Object>} newData - The new data array to be merged.
+ * @param {string} prop - The property name used to identify duplicates.
+ * @returns {Array<Object>} - The merged array with unique items based on the specified property.
  */
 export const validateAndMergeWithOld = (prevData, newData, prop) => {
 	const mergedData = [

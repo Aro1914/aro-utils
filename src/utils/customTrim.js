@@ -1,14 +1,9 @@
 /**
- * Trims a number to a specified number of decimal places using custom rounding logic
- * @param {number} el - The number to trim
- * @param {number} [dec=2] - The number of decimal places to trim to (default: 2)
- * @returns {number} The trimmed number
- * 
- * @example
- * customTrim(3.14159, 2) // returns 3.14
- * customTrim(3.14159, 0) // returns 3
- * customTrim(-3.14159, 2) // returns -3.14
- * customTrim(0, 2) // returns 0
+ * Formats a numeric value to a limited number of decimal places.
+ *
+ * @param {number} el - The value to be formatted.
+ * @param {number} dec - The number of decimal places to include. Default is 2.
+ * @returns {number} - The formatted value.
  */
 export const customTrim = (el, dec = 2) => {
 	if (el === 0) return el

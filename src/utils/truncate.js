@@ -1,13 +1,11 @@
 /**
- * Truncates a text string by keeping the beginning and end parts while adding an ellipsis in the middle.
- * @param {string} text - The input text to truncate
- * @param {number} displayLength - The number of characters to keep at the beginning and end of the truncated text
- * @returns {string} The truncated text with ellipsis in the middle, or the original text if it's short enough
- * 
- * @example
- * truncate("abcdefghijklmnop", 3) // returns "abc...nop"
- * truncate("abcdef", 3) // returns "abcdef"
- * truncate("", 3) // returns ""
+ * Truncates a given text to a certain display length.
+ *
+ * @param {string} text - The text to be truncated.
+ * @param {number} displayLength - The length of the text to be displayed.
+ *
+ * @returns {string} A truncated version of the text, with the first and last
+ *     displayLength characters displayed and the middle replaced with an ellipsis.
  */
 export function truncate(text, displayLength) {
 	if (!text) return text

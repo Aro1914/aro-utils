@@ -1,12 +1,19 @@
 /**
- * Asynchronously filters an array using a predicate function that returns a Promise
- * @param {Array} arr - The array to filter
- * @param {Function} predicate - Async function that returns a Promise resolving to boolean
- * @returns {Promise<Array>} A Promise that resolves to the filtered array
+ * Asynchronously filters an array using a predicate function that returns a Promise.
+ * @param {Array} arr - The array of items to process.
+ * @param {function} predicate - The function to call for each item. Must return a promise.
+ * @returns {Promise<Array>} A promise that resolves to an array of results from the predicate function.
  * @example
- * const numbers = [1, 2, 3, 4, 5];
- * const isEvenAsync = async (num) => num % 2 === 0;
- * const evenNumbers = await asyncFilter(numbers, isEvenAsync);
+ * const array = [1, 2, 3, 4, 5]
+ *
+ * async function isEven(num) {
+ * 	return new Promise((resolve) => {
+ * 		setTimeout(() => resolve(num % 2 === 0), 100)
+ * 	})
+ * }
+ *
+ * const evenNumbers = await asyncFilter(array, isEven)
+ * // evenNumbers = [2, 4]
  */
 export async function asyncFilter(arr, predicate) {
 	const results = await Promise.all(
@@ -15,5 +22,6 @@ export async function asyncFilter(arr, predicate) {
 			result: await predicate(item),
 		}))
 	)
+
 	return results.filter(({ result }) => result).map(({ item }) => item)
 }

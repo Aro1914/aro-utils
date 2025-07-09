@@ -1,13 +1,12 @@
 import { getASAInfo } from './tokenUtils'
 
 /**
- * Formats a currency amount based on the token's decimal places
- * @param {number|string} tok - The token ID
- * @param {number} amt - The amount to format
- * @param {number|null} dec - Optional override for decimal places
- * @returns {Promise<number>} The formatted amount
- * @example
- * const formattedAmount = await fmtCurrency(123456, 1000000, 6); // 1.0
+ * Formats a given amount of a token to its corresponding decimal representation.
+ * @param {number} tok - The ASA ID of the token.
+ * @param {number} amt - The amount of the token to be formatted.
+ * @param {number} [dec=null] - The number of decimal places to round to. If not
+ * provided, the default from the token configuration is used.
+ * @returns {number} - The formatted amount.
  */
 export const fmtCurrency = async (tok, amt, dec = null) => {
 	const { decimals = 0 } =

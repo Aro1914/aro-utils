@@ -1,13 +1,8 @@
 /**
- * Trims a number to 2 decimal places with proper rounding.
- * @param {number} el - The number to be trimmed
- * @returns {number} The trimmed number with 2 decimal places
- * @example
- * trimNum(5.6789) // returns 5.68
- * trimNum(5.6749) // returns 5.67
- * trimNum(-5.6789) // returns -5.68
- * trimNum(5) // returns 5
- * trimNum(0) // returns 0 
+ * Trim a number to 2 decimal places.
+ *
+ * @param {number} el - The value to be trimmed.
+ * @returns {number} - The trimmed value.
  */
 export const trimNum = (el) => {
 	if (el === 0) return el

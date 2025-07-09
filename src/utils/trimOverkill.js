@@ -1,3 +1,5 @@
+import { isNaN } from './isNaN'
+
 /**
  * Unified method with format options
  * This combines the reliability of the math method with formatting options
@@ -16,7 +18,8 @@ export function reduceNumber(num, options = {}) {
 
 	const opts = { ...defaultOptions, ...options }
 
-	let n = Math.round(num)
+	// Use the mathematical approach for reduction
+	let n = typeof num !== 'number' ? num : Math.round(num)
 	let powerOf10 = 0
 
 	while (n % 10 === 0 && n !== 0) {
@@ -31,6 +34,7 @@ export function reduceNumber(num, options = {}) {
 		isMultipleOf10: powerOf10 > 0,
 	}
 
+	// Return based on format option
 	if (opts.detectOnly) {
 		return result.isMultipleOf10
 	}
@@ -49,28 +53,8 @@ export function reduceNumber(num, options = {}) {
 	return result
 }
 
-/**
- * Trims excessive decimal places from a number while maintaining precision.
- * Handles both regular decimal numbers and very small numbers in scientific notation.
- * Uses a sophisticated rounding algorithm that considers subsequent digits for accurate rounding.
- * 
- * @param {number} el - The number to trim
- * @param {number} [dec=2] - The number of decimal places to maintain (default: 2)
- * @returns {number} The trimmed number with the specified decimal places
- * 
- * @example
- * trimOverkill(3.14159, 2) // returns 3.14
- * trimOverkill(0.0000001234, 2) // returns 0.00000012
- * trimOverkill(1.999999, 2) // returns 2
- * 
- * @description
- * The function handles several special cases:
- * - Numbers very close to zero (< 1e-6)
- * - Negative numbers
- * - Scientific notation
- * - Rounding up/down based on subsequent digits
- */
 export const trimOverkill = (el, dec = 2) => {
+	if (typeof el !== 'number') return el
 	if (el === 0) return el
 	if (dec === 0) return Math.round(trimOverkill(el, 1))
 	const el_ = el

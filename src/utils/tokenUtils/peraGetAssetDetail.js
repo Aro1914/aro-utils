@@ -1,6 +1,5 @@
 import { getConfig } from '../config'
-
-const { NETWORK } = getConfig()
+const { NETWORK } = getConfig();
 
 const PERA_REST_API_BASE_URL = `https://${NETWORK}.api.perawallet.app/v1/public/assets/`
 

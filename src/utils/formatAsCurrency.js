@@ -1,28 +1,26 @@
 import { reduceNumber, trimOverkill } from './trimOverkill'
+import { isNaN } from './isNaN'
+
 
 /**
- * Formats a number as a currency string with optional suffixes for large numbers.
- * @param {Object} params - The parameters for formatting
- * @param {number} [params.value=0] - The number to format
- * @param {number} [params.depth=1e6] - The threshold at which to start using suffixes (K,M,B,etc)
- * @param {number} [params.dp=2] - The number of decimal places to show
- * @param {boolean} [params.includeBlankDecimals=false] - Whether to show trailing zeros in decimals
- * @param {boolean} [params.trim=true] - Whether to reduce decimal places for large numbers
- * @param {string} [params.symbol=''] - The currency symbol to prepend (single character only)
- * @returns {string} The formatted currency string
- * @example
- * formatAsCurrency({ value: 1234567, symbol: '$' }) // Returns "$1.2M"
- * formatAsCurrency({ value: 1234.56, dp: 2, symbol: '€' }) // Returns "€1,234.56"
- * formatAsCurrency({ value: 1000000, depth: 1e9 }) // Returns "1,000,000"
+ * Format a number as currency with support for abbreviated large numbers
+ * and special formatting for very small decimals
+ *
+ * @param {Number} value - The number to format
+ * @param {Number} depth - The threshold for abbreviation (default: 1e6)
+ * @param {Number} dp - Number of decimal places (default: 2)
+ * @param {Boolean} includeBlankDecimals - Include .00 for whole numbers (default: false)
+ * @param {Boolean} trim - Trim decimal places for large numbers (default: false)
+ * @returns {String} Formatted currency string
  */
 export function formatAsCurrency({
 	value = 0,
 	depth = 1e6,
 	dp = 2,
 	includeBlankDecimals = false,
-	trim = true,
-	symbol = '', // '$' or '€'
+	trim = false,
 }) {
+	// Return value as is if cannot be cast to a valid number
 	if (isNaN(value)) {
 		return value
 	}
@@ -33,22 +31,29 @@ export function formatAsCurrency({
 	const dpMin = Number(
 		'0.' + '0'.repeat(absExponent - (absExponent >= 2 ? 2 : 0)) + '1'
 	)
+	// Handle small decimal values with many leading zeros
 	if (
 		value > 0 &&
 		absExponent >= (absExponent <= 4 ? 4 : dp) &&
 		value < dpMin
 	) {
+		// Use scientific notation to get the exact precision
 		const exponentValue = parseInt(exponent_, 10)
 
 		if (exponentValue < 0) {
+			// Due to floating point precision issues, we need to detect these cases
+			// Calculate leading zeros count after decimal point
+
 			const leadingZerosCount = Math.abs(exponentValue) - 1
 
+			// For very small numbers, precisely determine the significant digits
+			// Multiply by 10^(leadingZeros+dp) to position decimal point correctly for rounding
 			const scaleFactor = Math.pow(10, leadingZerosCount + dp)
 			const scaledValue = value * scaleFactor
 			const reduced = reduceNumber(scaledValue)?.reduced ?? scaledValue
 			const roundedMantissa = trimOverkill(reduced, 0)
 			const significantDigits = roundedMantissa.toString().substring(0, dp)
-
+			// Format the result with {n} indicating the count of zeros
 			return `0.0{${leadingZerosCount}}${significantDigits}`
 		}
 	}
@@ -68,11 +73,13 @@ export function formatAsCurrency({
 	let exponent = 0
 	let suffix = ''
 
+	// Apply trim logic for large numbers near threshold
 	let effectiveDp = dp
-
 	if (trim && dp != 0 && String(Math.floor(absValue)).length >= size[depth]) {
 		effectiveDp = 1 // Reduce to 1 decimal place
 	}
+
+	// Determine the exponent (depth) and corresponding suffix
 
 	if (absValue >= depth) {
 		const lookup = [
@@ -92,30 +99,27 @@ export function formatAsCurrency({
 		const depthExp = Math.floor(Math.log10(item.value))
 		exponent = depthExp
 	}
-
+	// Scale the value according to the exponent
 	const scaledValue = exponent > 0 ? value / Math.pow(10, exponent) : value
-
+	// Format the number with appropriate decimal places
 	let formatted
 	if (
 		effectiveDp === 0 ||
 		(!includeBlankDecimals && Number.isInteger(scaledValue))
 	) {
+		// No decimal places needed
 		formatted = trimOverkill(scaledValue, 0).toLocaleString()
 	} else {
+		// Format with specified decimal places
 		formatted = trimOverkill(
 			scaledValue,
 			trim ? dp : effectiveDp
 		).toLocaleString(undefined, {
 			minimumFractionDigits: includeBlankDecimals ? effectiveDp : 0,
-			maximumFractionDigits: effectiveDp,
+			maximumFractionDigits: trim ? dp : effectiveDp,
 		})
 	}
 
-	return (
-		(symbol && typeof symbol === 'string' && symbol.length === 1
-			? symbol
-			: '') +
-		formatted +
-		suffix
-	)
+	// Append the suffix
+	return formatted + suffix
 }

@@ -1,3 +1,4 @@
+import { btn } from '..'
 import { algonodeClientFetch } from './algonodeClient'
 import { algonodeIndexerFetch } from './algonodeIndexer'
 import { peraGetAssetDetail } from './peraGetAssetDetail'
@@ -31,10 +32,34 @@ export const getASAInfo = async (asset) => {
 	} else {
 		res = await algonodeIndexerFetch(asset)
 		if (res.success && (res.name || res['unitName'])) {
-			return { ...res, index: asset, unit: res['unitName'] }
+			return {
+				...res,
+				index: asset,
+				unit: res['unitName'],
+				supply: btn(res['total']),
+			}
 		} else {
 			res = await algonodeClientFetch(asset)
 			return { ...res, index: asset, unit: res['unitName'] }
 		}
+	}
+}
+
+export const getAssetInfo = async (asset) => {
+	asset = Number(asset)
+	if (asset === 0)
+		return {
+			success: true,
+			decimals: 6,
+			name: 'ALGO',
+			unit: 'ALGO',
+			index: asset,
+		}
+	let res = await algonodeIndexerFetch(asset)
+	if (res.success && (res.name || res['unitName'])) {
+		return { ...res, index: asset, unit: res['unitName'] }
+	} else {
+		res = await algonodeClientFetch(asset)
+		return { ...res, index: asset, unit: res['unitName'] }
 	}
 }

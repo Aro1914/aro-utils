@@ -1,10 +1,10 @@
 /**
- * Creates a throttled version of a function that limits its execution frequency
- * @param {Function} func - The function to throttle
- * @param {number} limit - The minimum time (in ms) between function executions
- * @returns {Function} A throttled version of the input function
- * @example
- * const throttledScroll = throttle(handleScroll, 100);
+ * Returns a new function that will only call the given function once per given
+ * limit (in milliseconds). This is useful for preventing a function from being
+ * called too rapidly.
+ *
+ * @param {function} func - The function to limit the call of.
+ * @param {number} limit - The limit in milliseconds.
  */
 export const throttle = (func, limit) => {
 	let lastFunc

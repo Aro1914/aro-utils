@@ -17,6 +17,6 @@ export {
 	validateNFDFormat,
 	verifySegment,
 } from './NFDUtils'
-export { createNftNumberExtractor } from './NFTUtils'
+export { createNftNumberExtractor as createNFT_IDExtractor } from './NFTUtils'
 export { peraGetAssetDetail } from './peraGetAssetDetail'
 export { getASAInfo } from './tokenUtil'

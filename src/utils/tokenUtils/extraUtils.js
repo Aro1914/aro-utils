@@ -1,8 +1,6 @@
 import algosdk from 'algosdk'
 import { getASAInfo } from './tokenUtil'
 import { getConfig } from '../config'
-import { btn } from '..';
-
 const { NETWORK } = getConfig()
 
 const indexerServer = `https://${NETWORK}-idx.algonode.cloud`
@@ -52,11 +50,12 @@ export const getAssetsByCreator = async ({
 							.indexOf(String(searchKey).toLowerCase()) !== -1
 					: true)
 			) {
-				data.push(btn(asset_id))
+				data.push(asset_id)
 			}
 		}
 		return data
 	} catch (err) {
+		// console.log(err)
 		return []
 	}
 }
@@ -106,6 +105,7 @@ export const getAssetsByAccount = async ({
 		}
 		return data
 	} catch (err) {
+		// console.log(err)
 		return []
 	}
 }
@@ -129,7 +129,9 @@ export const getAssetConfigNote = async (asset_id) => {
 				.trim()
 				.replace(/[^ -~]+/g, '')
 			const noteObject = JSON.parse(noteString)
+			// if (noteObject.standard === 'arc69') {
 			return noteObject
+			// }
 		} catch (err) {
 			// Oh well...
 		}
@@ -141,5 +143,8 @@ export const getAssetConfigNote = async (asset_id) => {
 		description: '',
 		media_url: asaBaseInfo?.url,
 		mime_type: 'image/png',
+		properties: {
+			redeemed: 'no',
+		},
 	}
 }

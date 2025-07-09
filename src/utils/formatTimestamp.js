@@ -1,13 +1,15 @@
 /**
- * Formats a Unix timestamp into a human-readable date/time string with the appropriate ordinal indicator
- * @param {number} unixTimestamp - The Unix timestamp to format (milliseconds since Unix epoch)
- * @returns {[string, string]} An array containing two elements:
- *                            - First element: formatted string in the format "HH:MM AM/PM, Day Month"
- *                            - Second element: ordinal indicator ('st', 'nd', 'rd', or 'th')
- * @example
- * formatTimestamp(1672531200000) // Returns ["12:00 AM, Sunday January 1", "st"]
+ * Converts a Unix timestamp to a human-readable date string.
+ * @param {number} unixTimestamp the timestamp to convert
+ * @param {{includeTime: boolean, includeYear: boolean}} [options]
+ * @param {boolean} [options.includeTime=true] whether to include the time in the output
+ * @param {boolean} [options.includeYear=false] whether to include the year in the output
+ * @returns {Array<string>} an array of 2 or 3 elements: the date string, the day suffix (e.g. 'st', 'nd', 'th'), and optionally the year
  */
-export function formatTimestamp(unixTimestamp) {
+export function formatTimestamp(
+	unixTimestamp,
+	{ includeTime = true, includeYear = false } = {}
+) {
 	const tag = {
 		1: 'st',
 		2: 'nd',
@@ -20,17 +22,14 @@ export function formatTimestamp(unixTimestamp) {
 		9: 'th',
 		0: 'th',
 	}
-	
 	const date = new Date(unixTimestamp)
 
-	
 	const timeOptions = {
 		hour: 'numeric',
 		minute: 'numeric',
 		hour12: true,
 	}
 
-	
 	const dateOptions = {
 		weekday: 'long',
 		day: 'numeric',
@@ -43,5 +42,12 @@ export function formatTimestamp(unixTimestamp) {
 	const time = timeFormatter.format(date)
 	const dayMonth = dateFormatter.format(date)
 
-	return [`${time}, ${dayMonth}`, `${tag[dayMonth[dayMonth.length - 1]]}`]
+	const year = date.getFullYear()
+
+	const returnValue = [
+		`${includeTime ? `${time}, ` : ''}${dayMonth}`,
+		`${tag[dayMonth[dayMonth.length - 1]]}`,
+	]
+	if (includeYear) returnValue.push(String(year))
+	return returnValue
 }

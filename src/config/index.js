@@ -1,6 +1,8 @@
 let config = {
 	NETWORK: 'mainnet',
 	SERVER_URI: 'https://default-server.com',
+	COLLECTION_RE: /^\/[a-f0-9]{24}$/,
+	DEFAULT_SIZE: 24,
 }
 
 // Validation function

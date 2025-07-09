@@ -1,21 +1,8 @@
 import { getASAInfo } from './tokenUtils'
 
-
 /**
- * Retrieves media information for a list of asset IDs
- * @param {(number|string)[]} [assetIDs] - Array of asset IDs to process
- * @returns {Promise<Array<{
- *   name?: string,
- *   mediaURL?: string,
- *   is_collectible?: boolean,
- *   mediaType?: string,
- *   extension?: string,
- *   logo?: string
- * }|string|null>>} Array of media objects or empty array if no assetIDs provided
- * - For collectibles: returns object with name, mediaURL, is_collectible, mediaType, and extension
- * - For non-collectibles with Pera fetch: returns object with logo and is_collectible
- * - For other assets: returns string URL or null
- * @throws {Error} Errors during processing individual assets are caught and ignored
+ * Sets the background of the element ref to that of the user's pfp
+ * @param {any} assetIDs An array of number - []assetID...
  */
 export const getAssetMedia = async (assetIDs) => {
 	const media = []
@@ -48,7 +35,7 @@ export const getAssetMedia = async (assetIDs) => {
 							const urlParts = media.url.split('/')
 							const cid = urlParts[urlParts.length - 1]
 							pfp = {
-								name: media?.name,
+								name: asaInfo?.name,
 								mediaURL: String(media?.url).includes(
 									'https://ipfs.algonode.dev'
 								)
@@ -78,7 +65,7 @@ export const getAssetMedia = async (assetIDs) => {
 				}
 				media.push(pfp)
 			} catch (error) {
-				// Oh well...
+				// Do nothing
 			}
 		}
 		return media

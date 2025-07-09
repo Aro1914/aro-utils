@@ -1,6 +1,5 @@
 import { getConfig } from '../config'
-
-const { NETWORK } = getConfig()
+const { NETWORK } = getConfig();
 
 const NFD_REST_API_BASE_URL = `https://api${
 	NETWORK === 'testnet' ? '.testnet' : ''
@@ -161,6 +160,6 @@ export const resolveAddress = async (nfd, isBase = false) => {
 	}
 	return {
 		success: false,
-		address: null
+		address: null,
 	}
 }

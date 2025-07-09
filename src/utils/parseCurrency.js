@@ -1,23 +1,12 @@
 import { getASAInfo } from './tokenUtils'
 
 /**
- * Parses currency amounts by adjusting for decimal places.
- * 
- * @param {(number|string)} tok - The token/asset ID to process
- * @param {number} amt - The amount to be parsed
- * @param {number|null} [dec=null] - Optional decimal places override
- * @returns {Promise<number>} The parsed amount adjusted for decimals
- * @async
- * 
- * @example
- * // With decimal override
- * const result1 = await parseCurrency(123456, 1.5, 6);
- * // result1: 1500000
- * 
- * @example
- * // Without decimal override (fetches decimals from ASA info)
- * const result2 = await parseCurrency(123456, 1.5);
- * // result2: depends on ASA decimals
+ * Converts a given amount of a token to its corresponding integer representation.
+ * @param {number} tok - The ASA ID of the token.
+ * @param {number} amt - The amount of the token to be parsed.
+ * @param {number} [dec=null] - The number of decimal places to round to. If not
+ * provided, the default from the token configuration is used.
+ * @returns {number} - The parsed amount.
  */
 export const parseCurrency = async (tok, amt, dec = null) => {
 	const { decimals = 0 } =

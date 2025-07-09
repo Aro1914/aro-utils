@@ -1,15 +1,8 @@
-
 /**
- * Converts milliseconds to a formatted time string
- * @param {Object} options - The options object
- * @param {number} options.duration - The duration in milliseconds
- * @param {boolean} [options.includeSeconds=true] - Whether to include seconds in the output
- * @param {boolean} [options.includeDays=false] - Whether to include days in the output
- * @returns {Array} An array containing:
- * - [0]: Formatted time string with padded zeros (e.g., "00:00:00.0")
- * - [1]: Formatted time string with numbers (e.g., "0:0:0")
- * - [2]: Human-readable time string (e.g., "1 hour, 30 minutes, 45 seconds")
- * - [3]: Object containing parsed time components {days, hours, minutes, seconds, milliseconds}
+ * Converts milliseconds to 3 different human readable values
+ * @param {{duration: number, includeSeconds: boolean, includeDays: boolean}} params
+ * @returns {[string, string, string, {days: (number | string), hours: (number | string), minutes: (number | string), seconds: (number | string), milliseconds: number}]} An array with 4 values, the first 3 being human
+ * readable values, and the last being the value of each time duration.
  */
 export function msToTime({
 	duration,

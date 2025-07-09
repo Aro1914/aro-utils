@@ -1,8 +1,7 @@
-import algosdk from 'algosdk'
+import algosdk from 'algosdk';
 import axios from 'axios'
 import { base58btc } from 'multiformats/bases/base58'
 import { getConfig } from '../config'
-
 const { NETWORK } = getConfig()
 const algodClientParams = {
 	token: '',

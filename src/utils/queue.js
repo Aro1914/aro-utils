@@ -1,8 +1,8 @@
-
 /**
- * Creates a Promise that resolves after a specified delay
- * @param {number} ms - The delay time in milliseconds
- * @returns {Promise<void>} A Promise that resolves after the specified delay
+ * Delays execution for a specified number of milliseconds.
+ * @param {number} ms - The number of milliseconds to delay.
+ * @returns {Promise<void>} A promise that resolves after the delay.
+ * @description Uses setTimeout internally to achieve the delay.
  */
 export function delay(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms))
@@ -88,9 +88,9 @@ export async function queueWithConcurrency(
  * @param {number} delayMs - The delay in milliseconds between calls.
  * @yields {any} The result of the callback function for each item.
  */
-async function* createTaskGenerator(array, callback, delayMs) {
+export async function* createTaskGenerator(array, callback, delayMs) {
 	for (const item of array) {
-		yield callback(item)
+		yield await callback(item)
 		await new Promise((resolve) => setTimeout(resolve, delayMs))
 	}
 }

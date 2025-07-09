@@ -1,36 +1,10 @@
 import { getASAInfo } from './tokenUtils'
 
 /**
- * Fetches token information and associated media for given asset IDs
- * @param {(number|string)[]} assetIDs - Array of Algorand asset IDs
- * @returns {Promise<Array<{
- *   token: {
- *     success?: boolean,
- *     decimals?: number,
- *     name?: string,
- *     unit?: string,
- *     index?: number,
- *     [key: string]: any
- *   },
- *   media: {
- *     name?: string,
- *     mediaURL?: string,
- *     is_collectible?: boolean,
- *     mediaType?: string,
- *     extension?: string,
- *     logo?: string
- *   } | string | null
- * }>>} Array of objects containing token info and media data
+ * Fetches token information and media for the given asset IDs.
  *
- * @description
- * For each asset ID:
- * - Fetches ASA (Algorand Standard Asset) information
- * - Handles special case for ALGO (assetID = 0)
- * - Processes both regular tokens and collectibles
- * - Handles IPFS media URLs
- * - Supports both Pera-fetched and standard ASA metadata
- *
- * @throws Errors are caught and logged but don't stop processing of other assets
+ * @param {number[]} assetIDs An array of asset IDs
+ * @returns {Promise<{token: {success: boolean, decimals: number, name: string, unit: string, index: number}, media: {name: string, mediaURL: string, is_collectible: boolean, mediaType: string, extension: string} | null}[]>}
  */
 export const getTokenAndMedia = async (assetIDs) => {
 	const media = []
@@ -62,7 +36,7 @@ export const getTokenAndMedia = async (assetIDs) => {
 								const urlParts = media.url.split('/')
 								const cid = urlParts[urlParts.length - 1]
 								pfp = {
-									name: media?.name,
+									name: asaInfo?.name,
 									mediaURL: String(media?.url).includes(
 										'https://ipfs.algonode.dev'
 									)
@@ -104,7 +78,7 @@ export const getTokenAndMedia = async (assetIDs) => {
 						media: pfp,
 					})
 				} catch (error) {
-					// Oh well...
+					// Do nothing
 					console.log('getTokenAndMedia', { error })
 				}
 			})
