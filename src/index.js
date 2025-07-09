@@ -46,6 +46,17 @@ export {
 	validateNFD,
 	validateNFDFormat,
 	verifySegment,
+	convertTime,
+	estimateReadingTimeMs,
+	fetchPrices,
+	formatAttributes,
+	isFocused,
+	createTaskGenerator,
+	createNFT_IDExtractor,
+	toMacroUnits,
+	toMicroUnits,
+	isNaN,
+	fetchPaginatedData,
 } from './utils'
 
 export { getConfig, setConfig } from './config'
